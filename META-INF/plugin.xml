@@ -1,0 +1,123 @@
+<idea-plugin>
+  <name>actiBPM</name>
+  <description><![CDATA[
+    Activiti Designer plugin for Intellij Idea.
+    Initial version.
+    ]]>
+  </description>
+    <idea-version since-build="123.001" />
+    <depends>com.intellij.modules.xml</depends>
+  <version>3.E-8</version>
+  <vendor email="uzbssr@gmail.com">Timur Abakumov</vendor>
+  <change-notes>
+      <![CDATA[
+      Added Generate PNG Action
+      Note: Please remove bpmn from "File and Code Templates"
+    ]]>
+  </change-notes>
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.lang</depends>
+  <!--<depends>com.intellij.modules.ultimate</depends>-->
+
+    <extensionPoints>
+        <extensionPoint qualifiedName="com.intellij.bpmnPaletteItemProvider"
+                        area="IDEA_PROJECT"
+                        interface="com.timout.bpmn.palette.window.BPMNPaletteItemProvider"/>
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceInterface="com.timout.bpmn.application.state.BPMNEditorStateService"
+                        serviceImplementation="com.timout.bpmn.application.state.BPMNEditorStateService"/>
+        <fileTypeFactory implementation="com.timout.bpmn.editor.FileTypeFactory"/>
+        <fileEditorProvider implementation="com.timout.bpmn.editor.BPMNEditorProvider"/>
+        <!--<extension>-->
+            <!--<fileTemplateGroup implementation="com.timout.bpmn.action.TemplatesFactory"/>-->
+        <bpmnPaletteItemProvider implementation="com.timout.bpmn.palette.UIDesignerPaletteProvider"/>
+        <projectService serviceInterface="com.timout.bpmn.palette.Palette"
+                        serviceImplementation="com.timout.bpmn.palette.Palette"/>
+
+        <applicationService serviceInterface="com.timout.bpmn.property.Properties"
+                            serviceImplementation="com.timout.bpmn.property.Properties"/>
+
+    </extensions>
+  <project-components>
+      <component>
+          <implementation-class>com.timout.bpmn.property.inspector.UIDesignerToolWindowManager</implementation-class>
+          <headless-implementation-class/>
+          <skipForDefaultProject/>
+      </component>
+      <component>
+          <implementation-class>com.timout.bpmn.palette.window.BPMNPaletteManager</implementation-class>
+      </component>
+    <!--<component>-->
+      <!--<implementation-class>com.timout.bpmn.project.ActivitiProjectComponent</implementation-class>-->
+    <!--</component>-->
+  </project-components>
+  <application-components>
+    <!--<component>-->
+      <!--<implementation-class>com.timout.bpmn.application.ActivitiConfiguration</implementation-class>-->
+    <!--</component>-->
+  </application-components>
+  <actions>
+    <!--<action id="BPMNView"-->
+            <!--class="com.timout.bpmn.action.BPMNViewerAction"-->
+            <!--text="View BPMN"-->
+            <!--icon="/com/timout/bpmn/icons/tool3x13.png"-->
+            <!--description="View BPMN file.">-->
+      <!--<add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>-->
+    <!--</action>-->
+      <action id="BPMNFile"
+              class="com.timout.bpmn.action.AddComponentAction"
+              text="BPMN File"
+              icon="/com/timout/bpmn/icons/tool3x13.png"
+              description="Add new BPMN file">
+          <add-to-group group-id="NewGroup" anchor="last"/>
+          <!--add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="AddToFavorites"/-->
+      </action>
+
+
+      <!-- We use "PluginName.ComponentName.ActionName" notation for "id" to avoid conflicts -->
+      <action id="actiBPM.Actions.ZoomIn" class="com.timout.bpmn.action.editor.ZoomInAction" text="Zoom In" description="Zoom In" icon="/graph/zoomIn.png">
+          <!--<keyboard-shortcut first-keystroke="ctrl+" second-keystroke="ctrl=" keymap="$default"/>-->
+          <!--<mouse-shortcut keystroke="ctrl alt button2" keymap="$default"/>-->
+      </action>
+
+      <action id="actiBPM.Actions.ZoomOut" class="com.timout.bpmn.action.editor.ZoomOutAction" text="Zoom Out" description="Zoom Out" icon="/graph/zoomOut.png">
+          <!--<keyboard-shortcut first-keystroke="ctrl typed A" second-keystroke="ctrl typed _" keymap="$default"/>-->
+          <!--<mouse-shortcut keystroke="ctrl alt button2" keymap="$default"/>-->
+      </action>
+
+      <action id="actiBPM.Actions.ZoomActual" class="com.timout.bpmn.action.editor.ZoomActualAction" text="Actual Zoom" description="Actual Zoom" icon="/graph/actualZoom.png">
+          <!--<keyboard-shortcut first-keystroke="control alt G" second-keystroke="C" keymap="$default"/>-->
+          <!--<mouse-shortcut keystroke="ctrl alt button2" keymap="$default"/>-->
+      </action>
+
+      <action id="actiBPM.Actions.FitPage" class="com.timout.bpmn.action.editor.FitPageAction" text="Fit Page" description="Fit Page" icon="/com/timout/bpmn/icons/editor/fitpage.png">
+          <!--<keyboard-shortcut first-keystroke="control alt G" second-keystroke="C" keymap="$default"/>-->
+          <!--<mouse-shortcut keystroke="ctrl alt button2" keymap="$default"/>-->
+      </action>
+
+      <action id="actiBPM.Actions.Grid" class="com.timout.bpmn.action.editor.GridAction" text="Grid" description="Grid" icon="/graph/grid.png">
+      </action>
+
+      <action id="actiBPM.Actions.Text" class="com.timout.bpmn.action.editor.TextAction" text="Text" description="View BPMN Text" icon="/fileTypes/xml.png">
+      </action>
+
+      <action id="actiBPM.Actions.PNG" class="com.timout.bpmn.action.editor.PNGAction" text="PNG" description="SaveAs PNG" icon="/com/timout/bpmn/icons/editor/savepng.png">
+      </action>
+
+      <group id="actiBPM.ActionGroup"  description="actiBPM ActionGroup">
+          <reference ref="actiBPM.Actions.ZoomIn"/>
+          <reference ref="actiBPM.Actions.ZoomOut"/>
+          <reference ref="actiBPM.Actions.ZoomActual"/>
+          <reference ref="actiBPM.Actions.FitPage"/>
+          <reference ref="actiBPM.Actions.Grid"/>
+          <reference ref="actiBPM.Actions.Text"/>
+          <reference ref="actiBPM.Actions.PNG"/>
+          <separator/>
+          <!--adds this group to the main toolbar before the Help action-->
+          <add-to-group group-id="MainToolBar" anchor="before" relative-to-action="HelpTopics"/>
+      </group>
+
+  </actions>
+</idea-plugin>
